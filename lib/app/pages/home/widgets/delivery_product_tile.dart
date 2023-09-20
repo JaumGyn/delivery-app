@@ -8,23 +8,28 @@ import 'package:vakinha_burger/app/models/product_model.dart';
 import 'package:vakinha_burger/app/pages/home/home_controller.dart';
 
 class DeliveryProductTile extends StatelessWidget {
-  const DeliveryProductTile({Key? key, required this.product})
-      : super(key: key);
+  const DeliveryProductTile({
+    Key? key,
+    required this.product,
+    this.orderProduct,
+  }) : super(key: key);
 
   final ProductModel product;
+  final OrderProductDto? orderProduct;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
         final controller = context.read<HomeController>();
-        final orderProduct =
+        final orderProductResult =
             await Navigator.of(context).pushNamed('/productDetail', arguments: {
           'product': product,
+          'order': orderProduct,
         });
 
-        if (orderProduct != null) {
-          controller.addOrUpdateBag(orderProduct as OrderProductDto);
+        if (orderProductResult != null) {
+          controller.addOrUpdateBag(orderProductResult as OrderProductDto);
         }
       },
       child: Padding(
